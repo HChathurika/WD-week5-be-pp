@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const Tour = require("../models/tourModel");
 
 // GET /tours
@@ -26,10 +27,53 @@ const getTourById = (req, res) => {
     res.json(tour);
   } else {
     res.status(404).json({ message: "Tour not found" });
+=======
+const Tour = require('../models/tourModel');
+const mongoose = require("mongoose");
+
+// GET /tours
+const getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find({}).sort({ createdAt: -1 });
+    res.status(200).json(tours);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve tours" });
+  }
+};
+ 
+// POST /tours
+const createTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create({ ...req.body });
+    res.status(201).json(newTour);
+  } catch (error) {
+    res.status(400).json({ message: "Failed to create tour", error: error.message });
+  }
+};
+
+// GET /tours/:tourId
+const getTourById = async (req, res) => {
+  const { TourId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(tourId)) {
+    return res.status(400).json({ message: "Invalid tour ID" });
+  }
+
+  try {
+    const tour = await Tour.findById(tourrId);
+    if (tour) {
+      res.status(200).json(tour);
+    } else {
+      res.status(404).json({ message: "Tour not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve tour" });
+>>>>>>> 2d773a6cb8c591375d33fa001f212a019a2bb624
   }
 };
 
 // PUT /tours/:tourId
+<<<<<<< HEAD
 const updateTour = (req, res) => {
   const tourId = req.params.tourId;
   if (isNaN(tourId)) {
@@ -42,10 +86,33 @@ const updateTour = (req, res) => {
   } else {
     // Handle update failure (e.g., tour not found)
     res.status(404).json({ message: "Tour not found" });
+=======
+const updateTour = async (req, res) => {
+  const { tourId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(tourId)) {
+    return res.status(400).json({ message: "Invalid tour ID" });
+  }
+
+  try {
+    const updatedTour = await Tour.findOneAndUpdate(
+      { _id: tourId },
+      { ...req.body },
+      { new: true }
+    );
+    if (updatedTour) {
+      res.status(200).json(updatedTour);
+    } else {
+      res.status(404).json({ message: "Tour not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update tour" });
+>>>>>>> 2d773a6cb8c591375d33fa001f212a019a2bb624
   }
 };
 
 // DELETE /tours/:tourId
+<<<<<<< HEAD
 const deleteTour = (req, res) => {
   const tourId = req.params.tourId;
   if (isNaN(tourId)) {
@@ -58,6 +125,24 @@ const deleteTour = (req, res) => {
   } else {
     // Handle deletion failure (e.g., tour not found)
     res.status(404).json({ message: "Tour not found" });
+=======
+const deleteTour = async (req, res) => {
+  const { tourId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(tourId)) {
+    return res.status(400).json({ message: "Invalid tour ID" });
+  }
+
+  try {
+    const deletedTour = await Tour.findOneAndDelete({ _id: tourId });
+    if (deletedTour) {
+      res.status(200).json({ message: "tour deleted successfully" });
+    } else {
+      res.status(404).json({ message: "tour not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete tour" });
+>>>>>>> 2d773a6cb8c591375d33fa001f212a019a2bb624
   }
 };
 
@@ -67,4 +152,8 @@ module.exports = {
   createTour,
   updateTour,
   deleteTour,
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 2d773a6cb8c591375d33fa001f212a019a2bb624
